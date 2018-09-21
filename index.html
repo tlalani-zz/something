@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>REC Attendance Query</title>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-database.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="functions.js"></script>
+    <script type="text/javascript" src="config.js"></script>
+</head>
+
+<body>
+    <div>
+        <div>
+            <input id="userName" type="text" name="username" placeholder="Username" value="recadmin@gmail.com">
+            <!--<input id="userName" type="text" name="username" placeholder="Email">-->
+            <input id="password" type="password" name="password" placeholder="Password" value="recadmin">
+            <!-- <input id="password" type="password" name="password" placeholder="Password"> -->
+        </div>
+        <input id="login_btn" type="button" name="login" value="Login" onclick="signIn()">
+        <div id="list" style="display:none">
+            <div style="border: 1px solid black; max-width: 25vw;">
+                <input id="list2" type="button" onclick="showDate(0)" value="Check Absent Students for a Particular Day">
+                <input id="list3" type="button" value="Get Attendance For a Particular Day" onclick="showDate(1)">
+            </div>
+            <div style="border: 1px solid black; max-width: 25vw;position: relative; top:25px;">
+                <input id="list1" type="button" onclick="showDate(2)" value="Attendance Stats">
+                <input id="list4" type="button" onclick="showDate(3)" value="Tardy Stats">
+                <input id="list5" type="button" onclick="showDate(4)" value="Attendance Stats By Grade">
+                <input id="list5" type="button" onclick="showDate(5)" value="Attendance Stats By Grade for a Particular Day">
+            </div>
+        </div>
+        <div style="position: relative;top:25px;">
+            <input style="display:none" id="date" type="date" name="date">
+            <input style="display:none" id="dateGo" type="button" value="GO" onclick="doQuery()">
+        </div>
+        <textarea disabled="true" rows="30" cols="100" id="response" style="border:left; display:none; resize:none;position:relative;top:25px;"></textarea>
+    </div>
+</body>
+
+</html>
