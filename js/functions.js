@@ -91,3 +91,15 @@ function getDateString(arr) {
     var s = months[month - 1] + " " + day + ", " + year;
     return s;
 }
+
+function getSchoolYear(arr) {
+    var month = arr[1];
+    var year = parseInt(arr[0]);
+    if(month >= 8) {
+        year1 = year+1;
+        return ""+year+"-"+year1;
+    } else {
+        year1 = year-1;
+        return ""+year1+"-"+year;
+    }
+}

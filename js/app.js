@@ -35,14 +35,17 @@ function doQuery() {
     var db = firebase.database();
     var date = document.getElementById("date").value;
     var dateSplit = [];
+    var schoolYear = 0;
     if (date) {
         dateSplit = date.split("-");
         date = getDateString(dateSplit);
+        schoolYear = getSchoolYear(dateSplit);
     }
     //Selection 1 is for absent checking for a certain date.
     if (selection == 0) {
         db.ref("People").once('value', function(snapshot) {
-            db.ref(date).once('value', function(snapshot1) {
+            db.ref(schoolYear+"/"+date).once('value', function(snapshot1) {
+                console.log(snapshot1);
                 snapshot.forEach(function(role) {
                     if (role.key == "Student") {
                         role.forEach(function(grade) {
@@ -85,7 +88,7 @@ function doQuery() {
         textarea.style.display = "block";
         //Selection 2 is attendance checking for a certain date.
     } else if (selection == 1) {
-        db.ref(date).once('value', function(snapshot) {
+        db.ref(schoolYear+"/"+date).once('value', function(snapshot) {
             snapshot.forEach(role => {
                 if (role.key == "Student") {
                     role.forEach(function(grade) {
@@ -134,7 +137,7 @@ function doQuery() {
         document.getElementById("dateGo").style.display = "none";
         var counter = 0;
         db.ref("People").once('value', function(snapshot) {
-            db.ref().once('value', function(snapshot1) {
+            db.ref(schoolYear).once('value', function(snapshot1) {
                 snapshot.forEach(function(role) {
                     if (role.key == "Student") {
                         role.forEach(function(grade) {
@@ -209,7 +212,7 @@ function doQuery() {
         document.getElementById("dateGo").style.display = "none";
         var counter = 0;
         db.ref("People").once('value', function(snapshot) {
-            db.ref().once('value', function(snapshot1) {
+            db.ref(schoolYear).once('value', function(snapshot1) {
                 snapshot.forEach(function(role) {
                     if (role.key == "Student") {
                         role.forEach(function(grade) {
@@ -290,7 +293,7 @@ function doQuery() {
         document.getElementById("dateGo").style.display = "none";
         var counter = 0;
         db.ref("People").once('value', function(snapshot) {
-            db.ref().once('value', function(snapshot1) {
+            db.ref(schoolYear).once('value', function(snapshot1) {
                 snapshot.forEach(function(role) {
                     if (role.key == "Student") {
                         role.forEach(function(grade) {
@@ -396,7 +399,7 @@ function doQuery() {
         var staffList = [0, 0, 0];
         var counter = 0;
         db.ref("People").once('value', function(snapshot) {
-            db.ref(date).once('value', function(snapshot1) {
+            db.ref(schoolYear+"/"+date).once('value', function(snapshot1) {
                 snapshot.forEach(function(role) {
                     if (role.key == "Student") {
                         role.forEach(function(grade) {
