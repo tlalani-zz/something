@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>QR Code Creator</title>
+	<style type="text/css">
+		.grid-box {
+			display: inline-block;
+			width: 430px;
+			height: 250px;
+			margin: 1em;
+		}
+		.image {
+			display: block;
+			margin: 0 auto;
+		}
+		.para {
+			font-size: 20px;
+			text-align:center;
+			max-width: 200px;
+
+		}
+		ul {
+              list-style-type: none;
+              margin: 0;
+              padding: 0;
+              overflow: hidden;
+              background-color: #666;
+        }
+            
+        li {
+              float: left;
+        }
+            
+        li a {
+              display: block;
+              color: white;
+              text-align: center;
+              padding: 14px 16px;
+              text-decoration: none;
+        }
+            
+        li a:hover {
+              background-color: #111;
+        }
+
+		@media print {
+			.noPrint {
+				display:none;
+			}
+			.print {
+				width:100%;
+			}
+		}
+	</style>
+</head>
+<body>
+<div>
+		<ul>
+			<li><a href="index.html">Attendance Info</a></li>
+			<li><a href="somethingelse.html">Format CSV for DB</a></li>
+			<li><a href="QRCodeCreator.html">Create QR Codes</a></li>
+		</ul>
+	<div>
+<div class="noPrint">
+	<h2>Upload the <span style="font-style:italic;">names.txt</span> file</h2>
+ <label for="input-file">Specify a file:</label><br>
+ <input type="file" id="input-file">
+ <script src="js/qr.js"></script>
+ <button onclick="ReadData()">Submit</button>
+ <textarea readonly id="content-target" style="height: 100px; width: 400px;"></textarea>
+</div>
+<div class="print" id="imageTabsDiv">	</div>
+</body>
+</html>
