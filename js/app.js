@@ -95,7 +95,8 @@ function doQuery() {
                         var list = [];
                         var idx = grades.indexOf(grade.key);
                         grade.forEach(function(student) {
-                            list.push(new Person(student.key, student.child("Time").val(), student.child("Reason").val(),
+                            var p = new Person();
+                            list.push(p.makePerson(student.key, student.child("Time").val(), student.child("Reason").val(),
                                 student.child("Comments").val()));
                         });
                         students[idx] = list;
@@ -104,7 +105,8 @@ function doQuery() {
                     if (roles.indexOf(role.key) >= 0) {
                         list = [];
                         role.forEach(staff => {
-                            list.push(new Person(staff.key, staff.child("Time").val(), staff.child("Reason").val(), staff.child("Comments").val()));
+                            var p = new Person();
+                            list.push(p.makePerson(staff.key, staff.child("Time").val(), staff.child("Reason").val(), staff.child("Comments").val()));
                         });
                         staff[roles.indexOf(role.key)] = list;
                     }

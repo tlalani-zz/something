@@ -1,11 +1,28 @@
 var todayDate;
-const TEACHER = "Teacher";
-const grades = ["1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", "6th Grade"]
-const roles = ["Teachers", "Management", "Support Staff"]
+var date = "";
 var peopleMap = new Map();
 var students = new Map();
+var checked = false;
+var date = "";
+var TEACHER = "Teacher"
 
-document.getElementById('input-file').addEventListener('change', getFile);
+function signIn() {
+  var username = document.getElementById("userName").value;
+  var password = document.getElementById("password").value;
+  firebase.auth().signInWithEmailAndPassword(username, password).then(function(user) {
+      if (user) {
+        showOptions();
+        document.getElementById('input-file').addEventListener('change', getFile);
+      }
+  }, function(error) {
+      alert(error);
+  });
+}
+
+function showOptions() {
+  document.getElementById("after_login").style.display = "block";
+  document.getElementById("login").style.display = "none";
+}
 
 function getFile(event) {
   const input = event.target
@@ -22,7 +39,6 @@ function placeFileContent(target, file) {
     target.value = content
   }).catch(error => {
     console.log(error)
-    console.log("HEY");
   })
 }
 
@@ -37,11 +53,35 @@ function readFileContent(file) {
 
 function mainFunc() {
   initializeMaps();
-  makeJson();
-  toFile(toJson());
+  makeObjects();
+  if(checked) {
+    toFile(toJson());
+  } else {
+    sendToDB();
+  }
 }
 
-function makeJson() {
+function sendToDB() {
+  var db = firebase.database();
+  for(var grade of students.values()) {
+    for(var name of grade) {
+      var schoolYear = getSchoolYearDate(name.date.split("/"));
+      date = getDateStringDate(name.date.split("/"))
+      var obj = makeObject(name);
+        db.ref(schoolYear+"/"+date+"/"+name.role+"/"+name.grade+"/"+name.name).set(obj)
+    }
+  }
+  for(var role of peopleMap.values()) {
+    for(var name of role) {
+      var schoolYear = getSchoolYearDate(name.date.split("/"));
+      date = getDateStringDate(name.date.split("/"))
+      var obj = makeObject(name);
+      db.ref(schoolYear+"/"+date+"/"+name.role+"/"+name.name).set(obj)
+    }
+  }
+}
+
+function makeObjects() {
   try {
     var text = document.getElementById('content-target').value;
     var lines = text.split("\n");
@@ -53,11 +93,13 @@ function makeJson() {
       }
       if (s[1] === "Teachers") {
         role = TEACHER;
+      } else if(s[1].split(" ")[0] === "Support") {
+        role = "Intern";
       } else {
         role = s[1];
       }
-      var date = s[0];
-      var time = splitDate(date);
+      var day = s[0];
+      var time = splitDate(day);
       var name = "";
       for (var i = 2; i < s.length; i++) {
         if (s[i] !== "") {
@@ -71,9 +113,12 @@ function makeJson() {
         if (grades[i] === role) {
           p.role = "Student";
           p.grade = grades[i];
-          p.time = time;
+          p.date = time[0];
+          p.time = time[1];
           p.name = name;
-          p.reason = tardy[0];
+          if(tardy[0] !== p.name) {
+            p.reason = tardy[0];
+          }
           p.comments = tardy[1];
           students.get(grades[i]).push(p);
           break;
@@ -82,15 +127,17 @@ function makeJson() {
       if (p.role == null) {
         p.role = role;
         p.grade = null;
-        p.time = time;
+        p.date = time[0]
+        p.time = time[1];
         p.name = name;
-        p.reason = tardy[0];
+        if(tardy[0] !== p.name) {
+          p.reason = tardy[0];
+        }
         p.comments = tardy[1];
         peopleMap.get(role).push(p);
       }
     }
   } catch (err) {
-    console.log("Hello")
     console.log(err);
   }
 }
@@ -104,19 +151,6 @@ function initializeMaps() {
   for (var i = 0; i < grades.length; i++) {
     students.set(grades[i], []);
     //students.get(roles[i]) = new ArrayList<String>();
-  }
-}
-
-function splitDate(date) {
-  var toddate = date.split(" ");
-  if (todayDate == null) {
-    todayDate = toddate[0];
-  }
-  var todtime = toddate[1].split(":");
-  if (parseInt(todtime[0]) > 12) {
-    return todtime[0] + ":" + todtime[1] + " PM";
-  } else {
-    return todtime[0] + ":" + todtime[1] + " AM";
   }
 }
 
@@ -138,23 +172,6 @@ function getTardy(tardy) {
   s[0] = null;
   s[1] = null;
   return s;
-}
-
-class Person {
-
-  constructor() {
-    this.role = null;
-    this.grade = null;
-    this.name = null;
-    this.time = null;
-    this.reason = null;
-    this.comments = null;
-  }
-
-  toString() {
-    var s = "Name: " + this.name;
-    return s;
-  }
 }
 
 function toFile(s) {
@@ -233,6 +250,14 @@ function download(filename, text) {
   sb.push("}");
   sb.push("}");
   return sb;
+}
+
+function boxChecked() {
+  if(checked) {
+    checked = false;
+  } else {
+    checked = true;
+  }
 }
 
 function getLastKey() {
