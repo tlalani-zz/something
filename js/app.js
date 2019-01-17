@@ -1,21 +1,25 @@
 // Initialize Firebase
-var db2;
-function signIn() {
-    var username = document.getElementById("userName").value;
-    var password = document.getElementById("password").value;
-    firebase.auth().signInWithEmailAndPassword(username, password).then(function(user) {
-        if (user) {
-            db2 = firebase.database();
-            showOptions();
-        }
-    }, function(error) {
-        alert(error);
-    });
-}
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+        console.log(user);
+        showOptions();
+    }
+});
 
 function showOptions() {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("login_btn").style.display = "none";
     document.getElementById("list").style.display = "block";
+    document.getElementById("login_out").style.display = "block";
+
 }
+
+function showLogin() {
+    document.getElementById("list").style.display = "none";
+    document.getElementById("login").style.display = "block";
+    document.getElementById("login_btn").style.display = "block";
+    document.getElementById("login_out").style.display = "none";
+  }
 
 function showOptionsDropdown() {
     document.getElementById("date").style.display = "none";

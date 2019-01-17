@@ -8,3 +8,26 @@ const config = {
 };
 
 firebase.initializeApp(normalize(config));
+
+function logout() {
+    firebase.auth().signOut()
+  .then(function() {
+    document.getElementById("login_out").style.display = "none";
+  })
+  .catch(function(error) {
+      alert(error);
+  });
+}
+
+function signIn() {
+    var username = document.getElementById("userName").value;
+    var password = document.getElementById("password").value;
+    firebase.auth().signInWithEmailAndPassword(username, password).then(function(user) {
+        if (user) {
+          showOptions();
+          document.getElementById('input-file').addEventListener('change', getFile);
+        }
+    }, function(error) {
+        alert(error);
+    });
+}

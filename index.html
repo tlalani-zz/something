@@ -7,8 +7,8 @@
     <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-database.js"></script>
     <script type="text/javascript" src="js/functions.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
     <style>
             ul {
               list-style-type: none;
@@ -44,8 +44,9 @@
                 <li><a href="somethingelse.html">Format CSV for DB</a></li>
                 <li><a href="QRCodeCreator.html">Create QR Codes</a></li>
                 <li style="float:right;"><a href="howtouse.html">How To Use</a></li>
+                <li id="login_out" style="float:right;display:none;" onclick="logout()"><a>Log Out</a></li>
             </ul>
-        <div>
+        <div id = "login">
             <h3>Please Login</h3>
            <!-- <input id="userName" type="text" name="username" placeholder="Username" value="recadmin@gmail.com">-->
            <input id="userName" type="text" name="username" placeholder="Email">

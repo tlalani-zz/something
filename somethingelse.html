@@ -41,16 +41,16 @@
         <li><a href="somethingelse.html">Format CSV for DB</a></li>
         <li><a href="QRCodeCreator.html">Create QR Codes</a></li>
         <li style="float:right;"><a href="howtouse.html">How To Use</a></li>
+        <li id="login_out" style="float:right;display:none;" onclick="logout()"><a>Log Out</a></li>
     </ul>
 <div>
-    <br>
 <div id = "login">
       <h3>Please Login</h3>
-     <input id="userName" type="text" name="username" placeholder="Email">
+     <input id="userName" type="text" name="userName" placeholder="Email">
       <input id="password" type="password" name="password" placeholder="Password">
+</div>
   <br>
   <input id="login_btn" type="button" name="login" value="Login" onclick="signIn()">
-</div>
 <div style="display:none" id="after_login">
 <h2>Specify a <span style="font-style: italic">CSV</span> file to Upload:</h2>
 <input type="file" id="input-file">
