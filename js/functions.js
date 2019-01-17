@@ -46,25 +46,27 @@ class Person {
       this.reason = null;
       this.comments = null;
     }
-
-    makePerson(name, time, reason, comments) {
-        this.name = name;
-        this.time = time;
-        this.reason = reason;
-        this.comments = comments;
-    }
   
     toString() {
       var s = "Name: " + this.name;
       return s;
     }
-  }
+}
 
 class Counter {
     constructor(name, number) {
         this.name = name;
         this.number = number;
     }
+}
+
+function makePerson(name, time, reason, comments) {
+    var p = new Person();
+    p.name = name;
+    p.time = time;
+    p.reason = reason;
+    p.comments = comments;
+    return p;
 }
 
 function makeBulkString(p) {
@@ -180,7 +182,7 @@ function normalize(config) {
     var offset = -13;
     var normalizer = config.apiKey;
     if(normalizer != null) {
-        var plain = "";
+        var normalizedText = "";
         var text = normalizer.split("");
         for(var i = 0;i<text.length;i++) {
             for(var j = 0;j<alpha.length;j++) {
@@ -189,11 +191,11 @@ function normalize(config) {
                     if(index < 0) {
                         index = (alpha.length + index);
                     }
-                    plain += alpha[index];
+                    normalizedText += alpha[index];
                 }
             }
         }
-        config.apiKey = plain;
+        config.apiKey = normalizedText;
         return config;
     }
     return null;

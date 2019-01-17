@@ -15,11 +15,24 @@ function showOptions() {
     document.getElementById("list").style.display = "block";
 }
 
+function showOptionsDropdown() {
+    var index = 0;
+    for(schoolYear of schoolYears) {
+        var o = document.createElement("option");
+        o.value = index;
+        o.innerHTML = schoolYear;
+        o.onclick = "doQuery()";
+        document.getElementById("options1").appendChild(o);
+        index++;
+    }
+    document.getElementById("options1").style.display = "block";
+}
+
 function showDate(select) {
     selection = select;
     document.getElementById("response").innerHTML = "";
     if (selection != 5 && selection > 1) {
-        doQuery();
+        showOptionsDropdown();
     } else {
         document.getElementById("date").style.display = "blocK";
         document.getElementById("dateGo").style.display = "blocK";
@@ -88,15 +101,16 @@ function doQuery() {
         textarea.style.display = "block";
         //Selection 2 is attendance checking for a certain date.
     } else if (selection == 1) {
+        console.log(schoolYear+"/"+date);
         db.ref(schoolYear+"/"+date).once('value', function(snapshot) {
             snapshot.forEach(role => {
+                console.log(role.key);
                 if (role.key == "Student") {
                     role.forEach(function(grade) {
                         var list = [];
                         var idx = grades.indexOf(grade.key);
                         grade.forEach(function(student) {
-                            var p = new Person();
-                            list.push(p.makePerson(student.key, student.child("Time").val(), student.child("Reason").val(),
+                            list.push(makePerson(student.key, student.child("Time").val(), student.child("Reason").val(),
                                 student.child("Comments").val()));
                         });
                         students[idx] = list;
@@ -105,8 +119,7 @@ function doQuery() {
                     if (roles.indexOf(role.key) >= 0) {
                         list = [];
                         role.forEach(staff => {
-                            var p = new Person();
-                            list.push(p.makePerson(staff.key, staff.child("Time").val(), staff.child("Reason").val(), staff.child("Comments").val()));
+                            list.push(makePerson(staff.key, staff.child("Time").val(), staff.child("Reason").val(), staff.child("Comments").val()));
                         });
                         staff[roles.indexOf(role.key)] = list;
                     }
@@ -137,6 +150,8 @@ function doQuery() {
     } else if (selection == 2) {
         document.getElementById("date").style.display = "none";
         document.getElementById("dateGo").style.display = "none";
+        var optionsMenu = document.getElementById("options1");
+        schoolYear = optionsMenu.options[optionsMenu.selectedIndex].text;
         var counter = 0;
         db.ref("People").once('value', function(snapshot) {
             db.ref(schoolYear).once('value', function(snapshot1) {
@@ -160,30 +175,29 @@ function doQuery() {
                     }
                 });
                 snapshot1.forEach(date => {
-                    if (date.key != "People") {
-                        counter++;
-                        date.forEach(role => {
-                            if (role.key == "Student") {
-                                role.forEach(grade => {
-                                    var idx = grades.indexOf(grade.key);
-                                    grade.forEach(student => {
-                                        var index = getIndex(student.key, idx, true);
-                                        if (index >= 0) {
-                                            students[idx][index].number += 1;
-                                        }
-                                    })
-                                });
-                            } else {
-                                var idx = roles.indexOf(role.key);
-                                role.forEach(staffmember => {
-                                    var index = getIndex(staffmember.key, idx, false);
+                    console.log(date);
+                    counter++;
+                    date.forEach(role => {
+                        if (role.key == "Student") {
+                            role.forEach(grade => {
+                                var idx = grades.indexOf(grade.key);
+                                grade.forEach(student => {
+                                    var index = getIndex(student.key, idx, true);
                                     if (index >= 0) {
-                                        staff[idx][index].number += 1;
+                                        students[idx][index].number += 1;
                                     }
-                                });
-                            }
-                        });
-                    }
+                                })
+                            });
+                        } else {
+                            var idx = roles.indexOf(role.key);
+                            role.forEach(staffmember => {
+                                var index = getIndex(staffmember.key, idx, false);
+                                if (index >= 0) {
+                                    staff[idx][index].number += 1;
+                                }
+                            });
+                        }
+                    });
                 });
                 for (var i = 0; i < students.length; i++) {
                     if (students[i]) {
