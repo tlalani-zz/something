@@ -1,9 +1,11 @@
 // Initialize Firebase
+var db2;
 function signIn() {
     var username = document.getElementById("userName").value;
     var password = document.getElementById("password").value;
     firebase.auth().signInWithEmailAndPassword(username, password).then(function(user) {
         if (user) {
+            db2 = firebase.database();
             showOptions();
         }
     }, function(error) {
@@ -16,26 +18,30 @@ function showOptions() {
 }
 
 function showOptionsDropdown() {
+    document.getElementById("date").style.display = "none";
+    document.getElementById("dateGo").style.display = "none";
     var index = 0;
     for(schoolYear of schoolYears) {
         var o = document.createElement("option");
         o.value = index;
         o.innerHTML = schoolYear;
-        o.onclick = "doQuery()";
         document.getElementById("options1").appendChild(o);
         index++;
     }
+    document.getElementById("yearGo").style.display="block";
     document.getElementById("options1").style.display = "block";
 }
 
 function showDate(select) {
     selection = select;
     document.getElementById("response").innerHTML = "";
-    if (selection != 5 && selection > 1) {
+    if (selection < 5 && selection > 1) {
         showOptionsDropdown();
     } else {
         document.getElementById("date").style.display = "blocK";
         document.getElementById("dateGo").style.display = "blocK";
+        document.getElementById("options1").style.display = "none";
+        document.getElementById("yearGo").style.display = "none";
     }
 
 }
@@ -47,18 +53,20 @@ function doQuery() {
     var textarea = document.getElementById("response");
     var db = firebase.database();
     var date = document.getElementById("date").value;
+    var optionsMenu = document.getElementById("options1");
     var dateSplit = [];
     var schoolYear = 0;
     if (date) {
         dateSplit = date.split("-");
         date = getDateString(dateSplit);
         schoolYear = getSchoolYear(dateSplit);
+    } else if(optionsMenu.style.display !== "none"){
+        schoolYear = optionsMenu.options[optionsMenu.selectedIndex].text;
     }
     //Selection 1 is for absent checking for a certain date.
     if (selection == 0) {
         db.ref("People").once('value', function(snapshot) {
             db.ref(schoolYear+"/"+date).once('value', function(snapshot1) {
-                console.log(snapshot1);
                 snapshot.forEach(function(role) {
                     if (role.key == "Student") {
                         role.forEach(function(grade) {
@@ -101,10 +109,8 @@ function doQuery() {
         textarea.style.display = "block";
         //Selection 2 is attendance checking for a certain date.
     } else if (selection == 1) {
-        console.log(schoolYear+"/"+date);
         db.ref(schoolYear+"/"+date).once('value', function(snapshot) {
             snapshot.forEach(role => {
-                console.log(role.key);
                 if (role.key == "Student") {
                     role.forEach(function(grade) {
                         var list = [];
@@ -148,20 +154,16 @@ function doQuery() {
         textarea.style.display = "block";
         //Attendnace stats.
     } else if (selection == 2) {
-        document.getElementById("date").style.display = "none";
-        document.getElementById("dateGo").style.display = "none";
-        var optionsMenu = document.getElementById("options1");
-        schoolYear = optionsMenu.options[optionsMenu.selectedIndex].text;
         var counter = 0;
-        db.ref("People").once('value', function(snapshot) {
-            db.ref(schoolYear).once('value', function(snapshot1) {
-                snapshot.forEach(function(role) {
+        db.ref("People").once('value', function(peopleSnapshot) {
+            db.ref(schoolYear).once('value', function(dateSnapshot) {
+                peopleSnapshot.forEach(function(role) {
                     if (role.key == "Student") {
                         role.forEach(function(grade) {
                             var list = [];
                             var idx = grades.indexOf(grade.key);
                             grade.forEach(function(student) {
-                                list.push(new Counter(student.val(), 0));
+                                list.push(new Counter(student.val(), -1));
                             });
                             students[idx] = list;
                         });
@@ -169,13 +171,12 @@ function doQuery() {
                         var list = [];
                         var idx = roles.indexOf(role.key);
                         role.forEach(staff => {
-                            list.push(new Counter(staff.val(), 0));
+                            list.push(new Counter(staff.val(), -1));
                         });
                         staff[idx] = list;
                     }
                 });
-                snapshot1.forEach(date => {
-                    console.log(date);
+                dateSnapshot.forEach(date => {
                     counter++;
                     date.forEach(role => {
                         if (role.key == "Student") {
@@ -203,8 +204,11 @@ function doQuery() {
                     if (students[i]) {
                         textarea.innerHTML += (grades[i] + "\n");
                         for (var j = 0; j < students[i].length; j++) {
-                            students[i][j].number = students[i][j].number * 1.0 / counter * 100.0;
-                            textarea.innerHTML += (makeAttendanceString(students[i][j]));
+                            if(students[i][j].number >= 0) {
+                                students[i][j].number++;
+                                students[i][j].number = students[i][j].number * 1.0 / counter * 100.0;
+                                textarea.innerHTML += (makeAttendanceString(students[i][j]));
+                            }
                         }
                         textarea.innerHTML += "\n\n";
                     }
@@ -213,8 +217,11 @@ function doQuery() {
                     if (staff[i]) {
                         textarea.innerHTML += (roles[i] + "\n");
                         for (var j = 0; j < staff[i].length; j++) {
-                            staff[i][j].number = staff[i][j].number * 1.0 / counter * 100.0;
-                            textarea.innerHTML += (makeAttendanceString(staff[i][j]));
+                            if(staff[i][j].number >= 0) {
+                                staff[i][j].number++;
+                                staff[i][j].number = staff[i][j].number * 1.0 / counter * 100.0;
+                                textarea.innerHTML += (makeAttendanceString(staff[i][j]));
+                            }
                         }
                         textarea.innerHTML += "\n\n";
                     }
@@ -224,30 +231,28 @@ function doQuery() {
         });
         //Tardy Stats
     } else if (selection == 3) {
-        document.getElementById("date").style.display = "none";
-        document.getElementById("dateGo").style.display = "none";
         var counter = 0;
         db.ref("People").once('value', function(snapshot) {
-            db.ref(schoolYear).once('value', function(snapshot1) {
-                snapshot.forEach(function(role) {
-                    if (role.key == "Student") {
-                        role.forEach(function(grade) {
-                            var list = [];
-                            var idx = grades.indexOf(grade.key);
-                            grade.forEach(function(student) {
-                                list.push(new Counter(student.val(), 0));
-                            });
-                            students[idx] = list;
-                        });
-                    } else {
+            snapshot.forEach(function(role) {
+                if (role.key == "Student") {
+                    role.forEach(function(grade) {
                         var list = [];
-                        var idx = roles.indexOf(role.key);
-                        role.forEach(staff => {
-                            list.push(new Counter(staff.val(), 0));
+                        var idx = grades.indexOf(grade.key);
+                        grade.forEach(function(student) {
+                            list.push(new Counter(student.val(), -1));
                         });
-                        staff[idx] = list;
-                    }
-                });
+                        students[idx] = list;
+                    });
+                } else {
+                    var list = [];
+                    var idx = roles.indexOf(role.key);
+                    role.forEach(staff => {
+                        list.push(new Counter(staff.val(), -1));
+                    });
+                    staff[idx] = list;
+                }
+            });
+            db.ref(schoolYear).once('value', function(snapshot1) {
                 snapshot1.forEach(date => {
                     if (date.key != "People") {
                         counter++;
@@ -258,7 +263,7 @@ function doQuery() {
                                     grade.forEach(student => {
                                         var index = getIndex(student.key, idx, true);
                                         if (index >= 0) {
-                                            if (!isTardy(student.child("Time").val(), true)) {
+                                            if (!isTardy(student, true)) {
                                                 students[idx][index].number += 1;
                                             }
                                         }
@@ -269,7 +274,7 @@ function doQuery() {
                                 role.forEach(staffmember => {
                                     var index = getIndex(staffmember.key, idx, false);
                                     if (index >= 0) {
-                                        if (!isTardy(staffmember.child("Time").val(), false)) {
+                                        if (!isTardy(staffmember, false)) {
                                             staff[idx][index].number += 1;
                                         }
                                     }
@@ -282,8 +287,11 @@ function doQuery() {
                     if (students[i]) {
                         textarea.innerHTML += (grades[i] + "\n");
                         for (var j = 0; j < students[i].length; j++) {
-                            students[i][j].number = students[i][j].number * 1.0 / counter * 100.0;
-                            textarea.innerHTML += (makeTardyString(students[i][j]));
+                            if(students[i][j].number >= 0) {
+                                students[i][j].number++;
+                                students[i][j].number = students[i][j].number * 1.0 / counter * 100.0;
+                                textarea.innerHTML += (makeTardyString(students[i][j]));
+                            }
                         }
                         textarea.innerHTML += "\n\n";
                     }
@@ -291,12 +299,15 @@ function doQuery() {
                 for (var i = 0; i < staff.length; i++) {
                     if (staff[i]) {
                         textarea.innerHTML += (roles[i] + "\n");
-                        for (var j = 0; j < staff[i].length; j++) {
-                            staff[i][j].number = staff[i][j].number * 1.0 / counter * 100.0;
-                            textarea.innerHTML += (makeTardyString(staff[i][j]));
+                        for(var j = 0;j<staff[i].length;j++) {
+                            if(staff[i][j] && staff[i][j].number >= 0) {
+                                staff[i][j].number++;
+                                staff[i][j].number = staff[i][j].number * 1.0 / counter * 100.0;
+                                textarea.innerHTML += (makeTardyString(staff[i][j]));
+                            }
                         }
                         textarea.innerHTML += "\n\n";
-                    }
+                    }   
                 }
                 textarea.style.display = "block";
             });
@@ -305,8 +316,6 @@ function doQuery() {
     } else if (selection == 4) {
         var gradeList = [0, 0, 0, 0, 0, 0];
         var staffList = [0, 0, 0];
-        document.getElementById("date").style.display = "none";
-        document.getElementById("dateGo").style.display = "none";
         var counter = 0;
         db.ref("People").once('value', function(snapshot) {
             db.ref(schoolYear).once('value', function(snapshot1) {
@@ -375,36 +384,24 @@ function doQuery() {
                 for (var i = 0; i < gradeList.length; i++) {
                     if (gradeList[i]) {
                         textarea.innerHTML += (grades[i] + "\n");
-                        textarea.innerHTML += (makeBulkString((gradeList[i] / counter)));
+                        textarea.innerHTML += (makeBulkString((gradeList[i] / counter, 1)));
                         textarea.innerHTML += "\n\n";
                     }
                 }
-                var min = 100;
-                var max = 0;
-                var index = 0;
-                var index1 = 0;
                 var addition = 0;
                 for (var i = 0; i < staffList.length; i++) {
-                    if (staffList[i]) {
-                        if (staffList[i] / counter < min) {
-                            min = staffList[i] / counter;
-                            index = i;
-                        }
-                        if (staffList[i] / counter > max) {
-                            max = staffList[i] / counter;
-                            index1 = i;
-                        }
-                        addition += staffList[i] / counter;
+                    if (staffList[i] !== null && staffList[i] !== undefined) {
+                        addition += staffList[i];
                     }
                 }
+                addition = addition / staffList.length;
                 if (addition > 0) {
                     textarea.innerHTML += ("Staff \n");
-                    textarea.innerHTML += (makeBulkString(addition / staffList.length));
+                    textarea.innerHTML += (makeBulkString(addition, 0));
                     textarea.innerHTML += "\n\n";
-                    textarea.innerHTML += ("Lowest Percentage \n");
-                    textarea.innerHTML += (roles[index] + ": " + parseFloat(min).toFixed(2) + "%" + "\n");
-                    textarea.innerHTML += ("Highest Percentage \n");
-                    textarea.innerHTML += (roles[index1] + ": " + parseFloat(max).toFixed(2) + "%");
+                    for(var i = 0;i<roles.length;i++) { 
+                        textarea.innerHTML += (roles[i] + ": " + makeBulkString(staffList[i], 0) + "\n");
+                    }
                 }
                 textarea.style.display = "block";
             });
@@ -475,40 +472,85 @@ function doQuery() {
                 for (var i = 0; i < gradeList.length; i++) {
                     if (gradeList[i]) {
                         textarea.innerHTML += (grades[i] + "\n");
-                        textarea.innerHTML += (makeBulkString(gradeList[i]));
+                        textarea.innerHTML += (makeBulkString(gradeList[i], 1));
                         textarea.innerHTML += "\n\n";
                     }
                 }
 
                 var addition = 0;
-                var min = 100;
-                var max = 0;
-                var index = 0;
-                var index1 = 0;
                 for (var i = 0; i < staffList.length; i++) {
-                    if (staffList[i]) {
-                        if (staffList[i] < min) {
-                            min = staffList[i];
-                            index = i;
-                        }
-                        if (staffList[i] > max) {
-                            max = staffList[i];
-                            index1 = i;
-                        }
+                    if (staffList[i] !== null && staffList[i] !== undefined) {
                         addition += staffList[i];
                     }
                 }
+                addition = addition / staffList.length;
                 if (addition > 0) {
                     textarea.innerHTML += ("Staff \n");
-                    textarea.innerHTML += (makeBulkString(addition / staffList.length));
+                    textarea.innerHTML += (makeBulkString(addition, 0));
                     textarea.innerHTML += "\n\n";
-                    textarea.innerHTML += ("Lowest Percentage \n");
-                    textarea.innerHTML += (roles[index] + ": " + parseFloat(min).toFixed(2) + "%" + "\n");
-                    textarea.innerHTML += ("Highest Percentage \n");
-                    textarea.innerHTML += (roles[index1] + ": " + parseFloat(max).toFixed(2) + "%");
+                    for(var i = 0;i<roles.length;i++) { 
+                        textarea.innerHTML += (roles[i] + ": " + makeBulkString(staffList[i], 0) + "\n");
+                    }
                 }
                 textarea.style.display = "block";
             });
+        });
+        //Tardy Stats by Grade by Day
+    } else if(selection == 6) {
+        var gradeCounter = [0, 0, 0, 0, 0, 0];
+        var staffCounter = [0, 0, 0];
+        var gradeList = [0, 0, 0, 0, 0, 0];
+        var staffList = [0, 0, 0];
+        db.ref(schoolYear+"/"+date).once('value', function(snapshot1) {
+            snapshot1.forEach(role => {
+                if (role.key == "Student") {
+                    role.forEach(grade => {
+                        var idx = grades.indexOf(grade.key);
+                        grade.forEach(student => {
+                            gradeCounter[idx] += 1;
+                            if (!isTardy(student, true))
+                                gradeList[idx] += 1;
+                        });
+                    });
+                } else {
+                    var idx = roles.indexOf(role.key);
+                    role.forEach(staffmember => {
+                        staffCounter[idx] += 1;
+                        if (!isTardy(staffmember, false))
+                            staffList[idx] += 1
+                    });
+                }
+            });
+            for(var i = 0;i<gradeList.length;i++) {
+                gradeList[i] = gradeList[i] / gradeCounter[i] * 100;
+            }
+            for(var i = 0;i<staffList.length;i++) {
+                staffList[i] = staffList[i] / staffCounter[i] * 100;
+            }
+            for (var i = 0; i < gradeList.length; i++) {
+                if (gradeList[i]) {
+                    textarea.innerHTML += (grades[i] + "\n");
+                    textarea.innerHTML += (makeBulkString(gradeList[i], 0));
+                    textarea.innerHTML += "\n\n";
+                }
+            }
+
+            var addition = 0;
+            for (var i = 0; i < staffList.length; i++) {
+                if (staffList[i] !== null && staffList[i] !== undefined) {
+                    addition += staffList[i];
+                }
+            }
+            addition = addition / staffList.length;
+            if (addition > 0) {
+                textarea.innerHTML += ("Staff \n");
+                textarea.innerHTML += (makeBulkString(addition, 0));
+                textarea.innerHTML += "\n\n";
+                for(var i = 0;i<roles.length;i++) { 
+                    textarea.innerHTML += (roles[i] + ": " + makeBulkString(staffList[i], 0) + "\n");
+                }
+            }
+            textarea.style.display = "block";
         });
     } else {
         alert("There was an Error, Please Refresh the Page");

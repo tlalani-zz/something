@@ -1,3 +1,16 @@
+//CONSTANTS
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const grades = ['1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade', '6th Grade'];
+const schoolYears = ['2018-2019', '2019-2020', '2020-2021', '2021-2022', '2022-2023', '2023-2024', '2024-2025'];
+const alpha = "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
+const roles = ['Management', 'Teacher', 'Intern'];
+var students = [];
+var staff = [];
+var selection = null;
+//CONSTANTS
+
+
+
 function getIndex(personName, index, isStudent) {
     if (isStudent) {
         for (var i = 0; i < students[index].length; i++) {
@@ -15,24 +28,39 @@ function getIndex(personName, index, isStudent) {
     return -1;
 }
 
-function isTardy(time, isStudent) {
+function isTardy(person, isStudent) {
+    var time = person.child("Time").val();
+    var comment = person.child("Comments").val();
     var timer = time.split(" ");
     var splitTime = timer[0].split(":");
     var hour = splitTime[0];
     var min = splitTime[1];
     if (isStudent) {
         if (hour > 10 || (hour == 10 && min > 40)) {
-            return true;
+            if(comment) {
+                comment = comment.toLowerCase();
+                if(comment === "not tardy" || comment === "not late") {
+                    return false;
+                }
+            }
         } else {
             return false;
         }
     } else {
         if (hour > 10 || (hour == 10 && min > 0)) {
-            return true;
+            if(comment) {
+                comment = comment.toLowerCase();
+                if(comment === "not tardy" || comment === "not late") {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
         } else {
             return false;
         }
     }
+    return true;
 }
 
 class Person {
@@ -69,10 +97,14 @@ function makePerson(name, time, reason, comments) {
     return p;
 }
 
-function makeBulkString(p) {
+function makeBulkString(p, isAtt) {
     var returnString = [];
     p = parseFloat(p).toFixed(2);
-    returnString.push(p, "% Attendance");
+    if(isAtt) {
+        returnString.push(p, "% Attendance");
+    } else {
+        returnString.push(p, "% On Time");
+    }
     return returnString.join("");
 }
 
