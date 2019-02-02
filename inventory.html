@@ -9,6 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-database.js"></script>
 	<script src="js/functions.js"></script>
     <script src="js/config.js"></script>
+    <script src="js/inventory.js"></script>
     <script>
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
@@ -18,15 +19,6 @@
     </script>
     <title>How to Use</title>
     <style>
-        img {
-            max-width:500px;
-            max-height:500px;
-            border:2px black solid;
-        }
-        p {
-            max-width:500px;
-            text-align:justify;
-        }
         .top ul {
               list-style-type: none;
               margin: 0;
@@ -50,6 +42,17 @@
         .top li a:hover {
               background-color: #111;
         }
+        #item_list {
+            height: 500px;
+            width: 800px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        #item_list ul {
+            flex:  40%;
+            border: 1px black dashed
+        }
     </style>
 </head>
 <body>
@@ -63,29 +66,17 @@
             <li id="login_out" style="float:right;display:none;" onclick="logout()"><a>Log Out</a></li>
         </ul>
     </div>
-    <h2>Format CSV for DB</h2>
-    <p>This tool is only used on days where the Google Form is used. On days where the Form is used, we need to navigate to the spreadsheet table 2. 
-        Select the date that you have taken attendance for and download the sheet as shown in the picture below. 
-        Then go to the <span style="font-size:16pt">CSV to JSON</span> tab above and upload your file, check to make sure it is correct and then click submit.</p>
-        <img src="pictures/howtouse/how_to_csv.png">
-    <h2>Create QR Codes</h2>
-    <p>This tool is used in the beginning of the year when QR codes are being created. You can also use this when creating QR codes for new students as well.
-        Create a text file and give it the same formatting as the picture below. <br><br>For students:
-        <ul>
-            <li>The first line will be the word GRADE.</li>
-            <li>Then the grade number.</li> 
-            <li>Then the names of all the students in that grade.</li>
-            <li>It is followed by an empty line. </li>
-        </ul>
-        <br><br>
-        For Teachers, Management, and Staff:
-        <ul>
-            <li>The first line will be the name of the position.</li>
-            <li>Then the names of all the people with that position.</li>
-            <li>It is followed by an empty line.</li>
-        </ul>
-        Please make sure to understand that format below so there are no errors when making codes.
-    </p>
-    <img src="pictures/howtouse/how_to_names.png">
+    <div id = "login">
+        <h3>Please Login</h3>
+       <!-- <input id="userName" type="text" name="username" placeholder="Username" value="recadmin@gmail.com">-->
+       <input id="userName" type="text" name="username" placeholder="Email">
+       <!-- <input id="password" type="password" name="password" placeholder="Password" value="recadmin">-->
+        <input id="password" type="password" name="password" placeholder="Password">
+    </div>
+    <br>
+    <input id="login_btn" type="button" name="login" value="Login" onclick="signIn()">
+    <input type="button" value="Show Inventory" onclick="showInventory()">
+    <div id="item_list">
+    </div>
 </body>
 </html>

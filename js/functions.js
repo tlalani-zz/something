@@ -8,8 +8,9 @@ var students = [];
 var staff = [];
 var selection = null;
 //CONSTANTS
-
-
+window.onunload = function() {
+    logout();
+};
 
 function getIndex(personName, index, isStudent) {
     if (isStudent) {
