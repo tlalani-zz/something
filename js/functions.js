@@ -233,3 +233,11 @@ function normalize(config) {
     }
     return null;
 }
+
+function openNav() {
+    document.getElementById("top").style.width = "250px";
+  }
+  
+  function closeNav() {
+    document.getElementById("top").style.width = "0";
+  }
