@@ -100,7 +100,7 @@ function makePerson(name, time, reason, comments) {
 
 function makeBulkString(p, isAtt) {
     var returnString = [];
-    p = parseFloat(p).toFixed(2);
+    p = percentage(parseFloat(p).toFixed(2));
     if(isAtt) {
         returnString.push(p, "% Attendance");
     } else {
@@ -111,12 +111,14 @@ function makeBulkString(p, isAtt) {
 
 function makeAttendanceString(p) {
     var returnString = [];
+    p.number = percentage(p.number);
     returnString.push(p.name, ":  ", p.number, "% Attendance", "\n");
     return returnString.join("");
 }
 
 function makeTardyString(p) {
     var returnString = [];
+    p.number = percentage(p.number);
     returnString.push(p.name, ":  ", p.number, "% On Time", "\n");
     return returnString.join("");
 }
@@ -234,10 +236,19 @@ function normalize(config) {
     return null;
 }
 
+function percentage(p) {
+    var num = p - Math.floor(p);
+    if(num > 0.5) {
+        return Math.floor(p) + 1;
+    } else {
+        return Math.floor(p);
+    }
+}
+
 function openNav() {
     document.getElementById("top").style.width = "250px";
-  }
+}
   
-  function closeNav() {
+function closeNav() {
     document.getElementById("top").style.width = "0";
-  }
+}

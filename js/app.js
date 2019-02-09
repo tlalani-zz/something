@@ -501,6 +501,9 @@ function doQuery() {
         });
         //Tardy Stats by Grade by Day
     } else if(selection == 6) {
+        var count = 0;
+        var percentage = 0;
+        var addGrade = [];
         var gradeCounter = [0, 0, 0, 0, 0, 0];
         var staffCounter = [0, 0, 0];
         var gradeList = [0, 0, 0, 0, 0, 0];
@@ -526,7 +529,10 @@ function doQuery() {
                 }
             });
             for(var i = 0;i<gradeList.length;i++) {
-                gradeList[i] = gradeList[i] / gradeCounter[i] * 100;
+                if(gradeList[i]) {
+                    gradeList[i] = gradeList[i] / gradeCounter[i] * 100;
+                    addGrade.push(gradeList[i]);
+                }
             }
             for(var i = 0;i<staffList.length;i++) {
                 staffList[i] = staffList[i] / staffCounter[i] * 100;
@@ -538,6 +544,18 @@ function doQuery() {
                     textarea.innerHTML += "\n\n";
                 }
             }
+
+            for(var i of addGrade) {
+                if(i) {
+                    count++;
+                    percentage += i;
+                }
+            }
+            percentage = percentage / count;
+            textarea.innerHTML += ("\nStudent Total Percentage On Time \n");
+            textarea.innerHTML += (makeBulkString(percentage, 0));
+            textarea.innerHTML += "\n\n\n";
+
 
             var addition = 0;
             for (var i = 0; i < staffList.length; i++) {

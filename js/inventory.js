@@ -142,14 +142,13 @@ function searchItem() {
     item = item.replace(/\d/g, '').toLowerCase();
     var j = 0;
     for(var val of items.values()) {
+        var e = document.getElementById("list_"+j);
+        var oldbg = e.style.backgroundColor;
         for(var i of val) {
             if(i.toLowerCase().includes(item)) {
-                var e = document.getElementById("list_"+j);
                 for(element of e.childNodes) {
                     if(element.innerHTML && element.innerHTML.includes(i)) {
-                        window.scroll(0, 100);
-                        var oldbg = e.style.backgroundColor;
-                        e.style.backgroundColor = 'yellow'
+                        e.style.backgroundColor = 'lime'
                         element.style.display = "block"
                         scrollIt(e, 50, 'linear')
                         flash(element, e, oldbg)
@@ -168,7 +167,7 @@ function flash(element, e, oldbg) {
     var intervalId = setInterval(function() {
         if (element.style.visibility == 'hidden') {
             element.style.visibility = 'visible';
-            if (count++ === 20) {
+            if (count++ === 10) {
                 clearInterval(intervalId);
                 element.style.display = "none";
                 e.style.backgroundColor = oldbg;
@@ -176,5 +175,5 @@ function flash(element, e, oldbg) {
         } else {
             element.style.visibility = 'hidden';
         }    
-    }, 200);
+    }, 600);
 }
