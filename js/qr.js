@@ -5,8 +5,10 @@ firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         currentUser = user;
         document.getElementById("login_out").style.display = "block";
+        document.getElementById("admin_qr").style.display = "block";
     } else {
         document.getElementById("login_out").style.display = "none";
+        document.getElementById("admin_qr").style.display = "none";
 
     }
 });
@@ -39,11 +41,7 @@ function readFileContent(file) {
 }
 
 function goToAdminPage() {
-    if(currentUser) {
-        window.location.href="admin_qr.html";
-    } else {
-        alert("No User is Logged in, Please Login for Access to Admin Options");
-    }
+    window.location.href="admin_qr.html";
 }
 function makeCodes() {
     var data = "";

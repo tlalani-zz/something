@@ -1,6 +1,5 @@
 var names = [];
 var currentUser = null;
-
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         currentUser = user;
@@ -13,6 +12,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
 
 function addPerson() {
+    var currentList = document.getElementById("current_list");
     var name_obj = document.getElementById("person_object");
     var pic1_obj = document.getElementById("student_staff");
     var pic2_obj = document.getElementById("pic");
@@ -22,18 +22,21 @@ function addPerson() {
         pic1 = "staff"
     }
     var pic2 = pic2_obj.value
-    names.push({ 
+    var obj = { 
         name:name, 
         folder:pic1, 
         jpeg:pic2 
-    });
+    }
+    names.push(obj);
+    currentList.innerHTML += obj.name+"<br/>&nbsp--"+obj.folder+"<br/>&nbsp--"+obj.jpeg+"<br/><br/>"
     name_obj.value = ""
     pic1_obj.selectedIndex = 0
     pic2_obj.value = ""
-    console.log(names)
+
 }
 
 function performQR() {
+    var imageTabsDiv = document.getElementById("imageTabsDiv");
     for (var object of names) {
         var p = document.createElement("p");
         var p2 = document.createElement("p");
@@ -69,4 +72,15 @@ function performQR() {
         imageTabsDiv.appendChild(div);
     }
     names = [];
+}
+
+function clearAll() {
+    var x = confirm("This will remove everything that you have added. Are you sure you would like to Clear?")
+    if(x == true){
+        names = [];
+        var currentList = document.getElementById("current_list");
+        var imageTabsDiv = document.getElementById("imageTabsDiv");
+        currentList.innerHTML = "Current List Of Added Codes<br/>";
+        imageTabsDiv.innerHTML = "";
+    }
 }

@@ -24,17 +24,27 @@
 </head>
 <body>
     <div class="noPrint">
-        <select id="student_staff">
-            <option>Student</option>
-            <option>Teacher</option>
-            <option>Management</option>
-            <option>Intern</option>
-        </select>
-        <input type="text" id="person_object" placeholder="Enter Name"/>
-        <input type="text" placeholder="Enter pic number" id="pic"/>
-        <button onclick="addPerson()">Add</button>
-        <br><br>
-        <button onclick="performQR()">Done</button>
+        
+        <div style="float:left;margin-top:14px;margin-left:10px;margin-right:10px">
+<a style="font-size:18px;text-decoration: none", href="QRCodeCreator.html">Back</a></div>
+        <div style="float:left; margin-top:15px;">
+            <select id="student_staff">
+                <option>Student</option>
+                <option>Teacher</option>
+                <option>Management</option>
+                <option>Intern</option>
+            </select>
+            <input type="text" id="person_object" placeholder="Enter Name"/>
+            <input type="text" placeholder="Enter pic number" id="pic"/>
+            <button onclick="addPerson()">Add</button>
+        </div>
+        <div style="float:left;margin-left:100px">
+            <p id="current_list">Current List Of Added Codes<br/><br/></p>
+            <button style="position:relative;top:10px;left:50px;", onclick="clearAll()">Clear</button>
+        </div>
+        <div style="position:absolute;top:100px;left:20px;">
+            <button onclick="performQR()">Done</button>
+        </div>
     </div>
     <div class="print" id="imageTabsDiv">	</div>
 </body>
