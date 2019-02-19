@@ -1,4 +1,15 @@
 var names = [];
+var currentUser = null;
+
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+        currentUser = user;
+        document.getElementById("login_out").style.display = "block";
+    } else {
+        document.getElementById("login_out").style.display = "none";
+
+    }
+});
 
 document.getElementById('input-file')
     .addEventListener('change', getFile);
@@ -25,6 +36,14 @@ function readFileContent(file) {
         reader.onerror = error => reject(error)
         reader.readAsText(file)
     })
+}
+
+function goToAdminPage() {
+    if(currentUser) {
+        window.location.href="admin_qr.html";
+    } else {
+        alert("No User is Logged in, Please Login for Access to Admin Options");
+    }
 }
 function makeCodes() {
     var data = "";

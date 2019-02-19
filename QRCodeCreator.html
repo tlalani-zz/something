@@ -6,16 +6,6 @@
     <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-database.js"></script>
 	<script src="js/functions.js"></script>
 	<script src="js/config.js"></script>
-	<script>
-		firebase.auth().onAuthStateChanged(function(user) {
-			if (user) {
-				document.getElementById("login_out").style.display = "block";
-			} else {
-				document.getElementById("login_out").style.display = "none";
-
-			}
-		});
-	</script>
 	<title>QR Code Creator</title>
 	<style type="text/css">
 		.top {
@@ -112,14 +102,15 @@
 	</div>
 	<div>
 <div class="noPrint">
-		<span class = "open" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
-
+        <span class = "open" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+        
 	<h2>Upload the <span style="font-style:italic;">names.txt</span> file</h2>
  <label for="input-file">Specify a file:</label><br>
  <input type="file" id="input-file">
  <script src="js/qr.js"></script>
  <button onclick="ReadData()">Submit</button>
  <textarea readonly id="content-target" style="height: 100px; width: 400px;"></textarea>
+ <button onclick="goToAdminPage()">Admin Options</button>
 </div>
 <div class="print" id="imageTabsDiv">	</div>
 </body>

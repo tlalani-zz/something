@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin QR Code Options</title>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-database.js"></script>
+	<script src="js/functions.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/admin_qr.js"></script>
+    <style>
+    	@media print {
+			.noPrint {
+				display:none;
+			}
+			.print {
+				width:100%;
+			}
+		}
+        </style>
+</head>
+<body>
+    <div class="noPrint">
+        <select id="student_staff">
+            <option>Student</option>
+            <option>Teacher</option>
+            <option>Management</option>
+            <option>Intern</option>
+        </select>
+        <input type="text" id="person_object" placeholder="Enter Name"/>
+        <input type="text" placeholder="Enter pic number" id="pic"/>
+        <button onclick="addPerson()">Add</button>
+        <br><br>
+        <button onclick="performQR()">Done</button>
+    </div>
+    <div class="print" id="imageTabsDiv">	</div>
+</body>
+</html>
