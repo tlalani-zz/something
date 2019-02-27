@@ -2,12 +2,16 @@
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const grades = ['1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade', '6th Grade'];
 const schoolYears = ['2018-2019', '2019-2020', '2020-2021', '2021-2022', '2022-2023', '2023-2024', '2024-2025'];
+//CONSTANTS
 const alpha = "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
 const roles = ['Management', 'Teacher', 'Intern'];
+const offset = -13;
 var students = [];
 var staff = [];
-var selection = null;
-//CONSTANTS
+var selection = null
+
+
+//FUNCTIONS
 window.onunload = function() {
     logout();
 };
@@ -214,7 +218,6 @@ function splitDate(date) {
 }
 
 function normalize(config) {
-    var offset = -13;
     var normalizer = config.apiKey;
     if(normalizer != null) {
         var normalizedText = "";

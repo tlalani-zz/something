@@ -1,25 +1,18 @@
 // Initialize Firebase
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-        console.log(user);
         showOptions();
+    } else {
+        alert("You must be logged in to use any functions");
+        window.location.href="index.html";
     }
 });
 
 function showOptions() {
-    document.getElementById("login").style.display = "none";
-    document.getElementById("login_btn").style.display = "none";
     document.getElementById("list").style.display = "block";
     document.getElementById("login_out").style.display = "block";
 
 }
-
-function showLogin() {
-    document.getElementById("list").style.display = "none";
-    document.getElementById("login").style.display = "block";
-    document.getElementById("login_btn").style.display = "block";
-    document.getElementById("login_out").style.display = "none";
-  }
 
 function showOptionsDropdown() {
     document.getElementById("date").style.display = "none";
@@ -32,18 +25,25 @@ function showOptionsDropdown() {
         document.getElementById("options1").appendChild(o);
         index++;
     }
-    document.getElementById("yearGo").style.display="block";
-    document.getElementById("options1").style.display = "block";
+    document.getElementById("yearGo").style.display="inline-block";
+    document.getElementById("options1").style.display = "inline-block";
 }
 
-function showDate(select) {
+function showDate(id, select) {
+    var daily_queries = document.getElementById("per-day-attendance")
+    var yearly_stats = document.getElementById("yearly-statistics")
+    if(id === daily_queries.id) {
+        yearly_stats.selectedIndex = 0;
+    } else {
+        daily_queries.selectedIndex = 0;
+    }
     selection = select;
     document.getElementById("response").innerHTML = "";
     if (selection < 5 && selection > 1) {
         showOptionsDropdown();
     } else {
-        document.getElementById("date").style.display = "blocK";
-        document.getElementById("dateGo").style.display = "blocK";
+        document.getElementById("date").style.display = "inline-block";
+        document.getElementById("dateGo").style.display = "inline-block";
         document.getElementById("options1").style.display = "none";
         document.getElementById("yearGo").style.display = "none";
     }
@@ -110,7 +110,7 @@ function doQuery() {
                 });
             });
         });
-        textarea.style.display = "block";
+        textarea.style.display = "inline-block";
         //Selection 2 is attendance checking for a certain date.
     } else if (selection == 1) {
         db.ref(schoolYear+"/"+date).once('value', function(snapshot) {
@@ -155,7 +155,7 @@ function doQuery() {
                 }
             }
         });
-        textarea.style.display = "block";
+        textarea.style.display = "inline-block";
         //Attendnace stats.
     } else if (selection == 2) {
         var counter = 0;
@@ -230,7 +230,7 @@ function doQuery() {
                         textarea.innerHTML += "\n\n";
                     }
                 }
-                textarea.style.display = "block";
+                textarea.style.display = "inline-block";
             });
         });
         //Tardy Stats
@@ -313,7 +313,7 @@ function doQuery() {
                         textarea.innerHTML += "\n\n";
                     }   
                 }
-                textarea.style.display = "block";
+                textarea.style.display = "inline-block";
             });
         });
         //Attendance Stats by Grade
@@ -407,7 +407,7 @@ function doQuery() {
                         textarea.innerHTML += (roles[i] + ": " + makeBulkString(staffList[i], 0) + "\n");
                     }
                 }
-                textarea.style.display = "block";
+                textarea.style.display = "inline-block";
             });
         });
         //Attendance stats by grade by day
@@ -496,7 +496,7 @@ function doQuery() {
                         textarea.innerHTML += (roles[i] + ": " + makeBulkString(staffList[i], 0) + "\n");
                     }
                 }
-                textarea.style.display = "block";
+                textarea.style.display = "inline-block";
             });
         });
         //Tardy Stats by Grade by Day
@@ -572,7 +572,7 @@ function doQuery() {
                     textarea.innerHTML += (roles[i] + ": " + makeBulkString(staffList[i], 0) + "\n");
                 }
             }
-            textarea.style.display = "block";
+            textarea.style.display = "inline-block";
         });
     } else {
         alert("There was an Error, Please Refresh the Page");

@@ -7,15 +7,8 @@
     <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-database.js"></script>
-	<script src="js/functions.js"></script>
-    <script src="js/config.js"></script>
-    <script>
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-            document.getElementById("login_out").style.display = "block";
-            }
-        });
-    </script>
+	<script src="../js/functions.js"></script>
+    <script src="../js/config.js"></script>
     <title>How to Use</title>
     <style>
         img {
@@ -53,55 +46,12 @@
         .open {
             display:none;
         }
-        @media only screen and (max-width: 850px) {
-        .open {
-            display:block;
-        }
-        .top {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: #111;
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
-
-        .top a {
-        float:none;
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 25px;
-        color: #818181;
-        display: block;
-        transition: 0.3s;
-        }
-
-        .top a:hover {
-        color: #f1f1f1;
-        }
-
-        .top .closebtn {
-        display:block;
-        position: absolute;
-        top: 0;
-        right: 25px;
-        font-size: 36px;
-        margin-left: 50px;
-        }
-        .top {padding-top: 15px;}
-        .top a {font-size: 18px;}
-    }
     </style>
 </head>
 <body>
         <div id="top" class="top">
-                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                <a href="index.html">Attendance Info</a>
-                <a href="somethingelse.html">Format CSV for DB</a>
+                <a href="attendance_data.html">Attendance Info</a>
+                <a href="csv.html">Format CSV for DB</a>
                 <a href="QRCodeCreator.html">Create QR Codes</a>
                 <a href="inventory.html">Inventory Search</a>
                 <a class = "touse" href="howtouse.html">How To Use</a>
@@ -112,7 +62,7 @@
     <p>This tool is only used on days where the Google Form is used. On days where the Form is used, we need to navigate to the spreadsheet table 2. 
         Select the date that you have taken attendance for and download the sheet as shown in the picture below. 
         Then go to the <span style="font-size:16pt">CSV to JSON</span> tab above and upload your file, check to make sure it is correct and then click submit.</p>
-        <img src="pictures/howtouse/how_to_csv.png">
+        <img src="../pictures/howtouse/how_to_csv.png">
     <h2>Create QR Codes</h2>
     <p>This tool is used in the beginning of the year when QR codes are being created. You can also use this when creating QR codes for new students as well.
         Create a text file and give it the same formatting as the picture below. <br><br>For students:
@@ -131,6 +81,6 @@
         </ul>
         Please make sure to understand that format below so there are no errors when making codes.
     </p>
-    <img src="pictures/howtouse/how_to_names.png">
+    <img src="../pictures/howtouse/how_to_names.png">
 </body>
 </html>

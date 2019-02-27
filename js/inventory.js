@@ -4,11 +4,11 @@ var open = -1;
 const delay = t => new Promise(resolve => setTimeout(resolve, t));
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-        console.log(user);
         showOptions();
         queryInventory();
     } else{
-        showLogin();
+        alert("You must be logged in to use any functions");
+        window.location.href = "index.html";
     }
 });
 
@@ -19,18 +19,9 @@ class Item {
     }
 }
 
-function showLogin() {
-    document.getElementById("login").style.display = "block";
-    document.getElementById("login_btn").style.display = "block";
-    document.getElementById("login_out").style.display = "none";
-    document.getElementById("some").style.display = "none"
-  }
 function showOptions() {
-    document.getElementById("login").style.display = "none";
-    document.getElementById("login_btn").style.display = "none";
     document.getElementById("login_out").style.display = "block";
     document.getElementById("some").style.display = "block"
-
 }
 
 function queryInventory() {

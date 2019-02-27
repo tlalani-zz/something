@@ -5,11 +5,9 @@ firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         currentUser = user;
         document.getElementById("login_out").style.display = "block";
-        document.getElementById("admin_qr").style.display = "block";
     } else {
-        document.getElementById("login_out").style.display = "none";
-        document.getElementById("admin_qr").style.display = "none";
-
+        alert("You must be logged in to use any functions");
+        window.location.href="index.html";
     }
 });
 
@@ -40,9 +38,6 @@ function readFileContent(file) {
     })
 }
 
-function goToAdminPage() {
-    window.location.href="admin_qr.html";
-}
 function makeCodes() {
     var data = "";
     var staffIndex = 1;

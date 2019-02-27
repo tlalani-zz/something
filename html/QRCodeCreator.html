@@ -4,9 +4,9 @@
 	<script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-database.js"></script>
-	<script src="js/functions.js"></script>
-	<script src="js/config.js"></script>
-	<title>QR Code Creator</title>
+	<script src="../js/functions.js"></script>
+	<script src="../js/config.js"></script>
+    <title>QR Code Creator</title>
 	<style type="text/css">
 		.top {
             overflow: hidden;
@@ -33,53 +33,6 @@
         .open {
             display:none;
         }
-        @media only screen and (max-width: 850px) {
-        .open {
-            display:block;
-        }
-        .top {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: #111;
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
-
-        .top a {
-		position: relative;
-		top:35px;
-        float:none;
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 25px;
-        color: #818181;
-        display: block;
-        transition: 0.3s;
-        }
-
-        .top a:hover {
-        color: #f1f1f1;
-		background-color:#111;
-        }
-
-        .top .closebtn {
-        display:block;
-        position: absolute;
-        top: 0;
-        right: 25px;
-        font-size: 36px;
-        margin-left: 50px;
-		text-align:center;
-        }
-        .top {padding-top: 15px;}
-        .top a {font-size: 18px;}
-		}
-
 		@media print {
 			.noPrint {
 				display:none;
@@ -92,9 +45,8 @@
 </head>
 <body>
 	<div id="top" class="top">
-		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-		<a href="index.html">Attendance Info</a>
-		<a href="somethingelse.html">Format CSV for DB</a>
+		<a href="attendance_data.html">Attendance Info</a>
+		<a href="csv_to_json.html">Format CSV for DB</a>
 		<a href="QRCodeCreator.html">Create QR Codes</a>
 		<a href="inventory.html">Inventory Search</a>
 		<a class = "touse" href="howtouse.html">How To Use</a>
@@ -110,7 +62,8 @@
  <script src="js/qr.js"></script>
  <button onclick="ReadData()">Submit</button>
  <textarea readonly id="content-target" style="height: 100px; width: 400px;"></textarea>
- <button id="admin_qr", style="display:none;", onclick="goToAdminPage()">Admin Options</button>
+ <br><br>
+ <button id="admin_qr" onclick="goToAdminPage()">Admin Options</button>
 </div>
 <div class="print" id="imageTabsDiv">	</div>
 </body>

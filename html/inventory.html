@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-database.js"></script>
+	<script src="../js/functions.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/inventory.js"></script>
+    <script src="../js/scroll.js"></script>
+    <title>Inventory Query</title>
+    <style>
+		.top {
+            overflow: hidden;
+            background-color: #333;
+        }
+        .top a {
+        float:left;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+        }
+
+        /* Change the color of links on hover */
+        .top a:hover {
+        background-color: #ddd;
+        color: black;
+        }
+        /* Add a color to the active/current link */
+        .top .closebtn {
+            display: none;
+        }
+        .open {
+            display:none;
+        }
+    </style>
+</head>
+<body>
+    <div id="top" class="top">
+        <a href="attendance_data.html">Attendance Info</a>
+        <a href="csv_to_json.html">Format CSV for DB</a>
+        <a href="QRCodeCreator.html">Create QR Codes</a>
+        <a href="inventory.html">Inventory Search</a>
+        <a href="howtouse.html">How To Use</a>
+        <a id="login_out" onclick="logout()">Log Out</a>
+    </div>
+    <div id = "some">
+        <input id="search" type="text" placeholder="Search For an Item">
+        <input id="search_btn" type="button" value="Search" onclick="searchItem()">
+    </div>
+    <br>
+    <div id="item_list" style="float:left">
+    </div>
+</body>
+</html>

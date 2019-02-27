@@ -10,22 +10,14 @@ firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     showOptions();
   } else {
-    showLogin();
+    alert("You must be logged in to use any functions");
+    window.href.location = "index.html";
   }
 });
 
 function showOptions() {
   document.getElementById("after_login").style.display = "block";
-  document.getElementById("login").style.display = "none";
-  document.getElementById("login_btn").style.display = "none";
   document.getElementById("login_out").style.display = "block";
-}
-
-function showLogin() {
-  document.getElementById("after_login").style.display = "none";
-  document.getElementById("login").style.display = "block";
-  document.getElementById("login_btn").style.display = "block";
-  document.getElementById("login_out").style.display = "none";
 }
 
 function getFile(event) {

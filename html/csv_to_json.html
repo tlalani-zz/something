@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-database.js"></script>
+    <script src="../js/functions.js"></script>
+    <script src="../js/config.js"></script>
+
+    <title>CSV to JSON</title>
+    <style>
+		.top {
+            overflow: hidden;
+            background-color: #333;
+        }
+        .top a {
+        float:left;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+        }
+
+        /* Change the color of links on hover */
+        .top a:hover {
+        background-color: #ddd;
+        color: black;
+        }
+        /* Add a color to the active/current link */
+        .top .closebtn {
+            display: none;
+        }
+        .open {
+            display:none;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div id="top" class="top">
+        <a href="attendance_data.html">Attendance Info</a>
+        <a>Format CSV for DB</a>
+        <a href="QRCodeCreator.html">Create QR Codes</a>
+        <a href="inventory.html">Inventory Search</a>
+        <a class = "touse" href="howtouse.html">How To Use</a>
+        <a class = "login_out" id="login_out" onclick="logout()">Log Out</a>
+      </div>
+<div>
+    
+<div style="display:none" id="after_login">
+<h2>Specify a <span style="font-style: italic">CSV</span> file to Upload:</h2>
+<input type="file" id="input-file">
+<button onclick="mainFunc()">Submit</button>
+<textarea readonly id="content-target" style="height: 100px; width: 400px;"></textarea>
+<input id="todb" type="checkbox" onchange="boxChecked()">
+<label style="font-size:10pt">Save as JSON?</label>
+<script src="../js/CSVToJson.js"></script>
+</div>
+</body>
+</html>

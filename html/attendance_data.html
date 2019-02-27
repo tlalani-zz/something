@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>REC Attendance Query</title>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-database.js"></script>
+    <script type="text/javascript" src="../js/functions.js"></script>
+    <script type="text/javascript" src="../js/config.js"></script>
+    <script type="text/javascript" src="../js/app.js"></script>
+    <style>
+        .top {
+            overflow: hidden;
+            background-color: #333;
+        }
+        .top a {
+        float:left;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+        }
+
+        /* Change the color of links on hover */
+        .top a:hover {
+        background-color: #ddd;
+        color: black;
+        }
+
+        /* Add a color to the active/current link */
+        .top .closebtn {
+            display: none;
+        }
+        .open {
+            display:none;
+        }
+    </style>
+</head>
+
+
+<body>
+        <div id="top" class="top">
+                <a>Attendance Info</a>
+                <a href="csv_to_json.html">Format CSV for DB</a>
+                <a href="QRCodeCreator.html">Create QR Codes</a>
+                <a href="inventory.html">Inventory Search</a>
+                <a class = "touse" href="howtouse.html">How To Use</a>
+                <a class = "login_out" id="login_out" onclick="logout()">Log Out</a>
+            </div>
+            <br>
+            <br>
+    <div>
+        <div id="list" style="display:none;margin-left:20px;text-align:center;" >
+            <span style="color:gray;font-size:14px;">Select One From</span>
+            <br><br>
+            <label for="per-day-attendance" style="font-size:13px;color:gray;">Weekly Queries: </label><br>
+            <select id="per-day-attendance" onchange="showDate(this.id, this.options[this.selectedIndex].value)">
+                <option selected disabled style="color:gray;"></option>
+                <option id="list2" value="0">Check Absent Students for a Particular Day</option>
+                <option id="list3" value="1">Get Attendance For a Particular Day</option>
+                <option id="list5" value="5">Attendance Stats By Grade for a Particular Day</option>
+                <option id="list6" value="6">Tardy Stats By Grade for a Particular Day</option>
+            </select>
+            <br><br>
+            <span style="color:gray;font-size:14px;">or</span>
+            <br><br>
+            <label for="yearly-statistics" style="font-size:13px;color:gray;">Yearly Statistics: </label>
+            <br>
+            <select id="yearly-statistics" onchange="showDate(this.id, this.options[this.selectedIndex].value)">
+                <option selected disabled style="color:gray;"></option>
+                <option id="list1" value="2" >Attendance Stats</option>
+                <option id="list4" value="3">Tardy Stats</option>
+                <option id="list5" value="4">Attendance Stats By Grade</option>
+            </select>
+            <br><br>
+            <input style="display:none" id="date" type="date" name="date">
+            <input style="display:none" id="dateGo" type="button" value="GO" onclick="doQuery()">
+            <div id="options">
+                <select id="options1" style="display:none;">
+                </select>
+                <input style="display:none;" id="yearGo" type="button" value="GO" onclick="doQuery()">
+            </div>
+            <br>
+            <textarea disabled="true" rows="30" cols="100" id="response" style="border:left; display:none; resize:none;"></textarea>
+        </div>
+    </div>
+</body>
+
+</html>

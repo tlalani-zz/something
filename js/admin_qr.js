@@ -1,13 +1,8 @@
 var names = [];
-var currentUser = null;
 firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-        currentUser = user;
-        //document.getElementById("login_out").style.display = "block";
-        //var f = new File(null, '../pictures');
-    } else {
-        document.getElementById("login_out").style.display = "none";
-
+    if (!user) {
+        alert("You must be logged in to use any functions");
+        window.location.href="index.html";
     }
 });
 
