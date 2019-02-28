@@ -1,0 +1,93 @@
+body {
+    padding:0;
+    margin:0;
+    background-color:black;
+    font-family:'Montserrat',sans-serif;
+    color:white;
+}
+
+.background {
+    position:absolute;
+    height:100%;
+    width:100%;
+    background-image:url("../pictures/webpage_pictures/library.jpg");
+    background-size:cover;
+    opacity:0.3;
+    z-index:-10;
+}
+
+.top {
+    overflow: hidden;
+    background-color: #333;
+}
+.top a {
+float:left;
+color: white;
+text-align: center;
+padding: 14px 16px;
+text-decoration: none;
+font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.top a:hover {
+background-color: #ddd;
+color: black;
+}
+
+/* Add a color to the active/current link */
+.top .closebtn {
+    display: none;
+}
+.open {
+    display:none;
+}
+
+
+
+span {
+    color:gray;font-size:14px;
+}
+
+
+#list {
+    display:none;
+    margin-left:20px;
+    text-align:center;
+}
+
+.label-for {
+    font-size:13px;
+    color:gray;
+}
+
+.att {
+    color:gray;
+}
+
+.date {
+    display:none
+}
+
+.att {
+    padding:5px;
+    margin-bottom:10px;
+}
+
+.attendance-yearly {
+    margin-top:10px;
+}
+
+.input-items {
+    box-sizing: border-box;
+    padding:10px, 10px;
+    border-radius: 7px;
+    opacity:0.8;
+}
+
+.boxes {
+    width:100%;
+}
+.box {
+    width:33%
+}

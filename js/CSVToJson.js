@@ -11,7 +11,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     showOptions();
   } else {
     alert("You must be logged in to use any functions");
-    window.href.location = "index.html";
+    window.location.href = "index.html";
   }
 });
 
