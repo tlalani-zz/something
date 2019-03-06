@@ -551,7 +551,7 @@ function presentAbsentTardyForDay(db, textarea, schoolYear, date) {
                         grade.forEach(function(student) {
                             list = students[idx];
                             var index = getIndex(student.key, list);
-                            if (index >= 0) {
+                            if (index >= 0 && student.child("Time").val() !== '-1') {
                                 var time = student.child("Time").val().split(" ")[0].split(":");
                                 var hour = parseInt(time[0])
                                 var minute = parseInt(time[1]);
@@ -562,6 +562,9 @@ function presentAbsentTardyForDay(db, textarea, schoolYear, date) {
                                     list[index].push(student.child("Reason").val());
                                     list[index].push(student.child("Comments").val());
                                 }
+                            } else {
+                                list[index].push(student.child("Reason").val());
+                                list[index].push(student.child("Comments").val());
                             }
                         });
                         students[idx] = list;
