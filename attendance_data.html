@@ -10,6 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-database.js"></script>
     <script type="text/javascript" src="js/functions.js"></script>
     <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/app-functions.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
 </head>
 
@@ -23,6 +24,7 @@
         <a class = "touse" href="howtouse.html">How To Use</a>
         <a class = "login_out" id="login_out" onclick="logout()">Log Out</a>
     </div>
+    <a type="button" class="manual" href="manual_entry.html">Manual Entry</a>
     <div>
         <div id="list">
             <h3 >Select One From</h3>
@@ -32,8 +34,9 @@
                     <option selected disabled></option>
                     <option id="list2" value="0">Check Absent Students for a Particular Day</option>
                     <option id="list3" value="1">Get Attendance For a Particular Day</option>
-                    <option id="list5" value="5">Attendance Stats By Grade for a Particular Day</option>
-                    <option id="list6" value="6">Tardy Stats By Grade for a Particular Day</option>
+                    <option id="list5" value="2">Attendance Stats By Grade for a Particular Day</option>
+                    <option id="list6" value="3">Tardy Stats By Grade for a Particular Day</option>
+                    <option id="list7" value="4">PAT for Day</option>
                 </select>
             </div>
             <span>or</span>
@@ -41,9 +44,10 @@
                 <label class="label-for" for="yearly-statistics">Yearly Statistics: </label><br>
                 <select class="att year" id="yearly-statistics" onchange="showDate(this.id, this.options[this.selectedIndex].value)">
                     <option selected disabled></option>
-                    <option id="list1" value="2" >Attendance Stats</option>
-                    <option id="list4" value="3">Tardy Stats</option>
-                    <option id="list5" value="4">Attendance Stats By Grade</option>
+                    <option id="list1" value="5" >2Attendance Stats</option>
+                    <option id="list4" value="6">Tardy Stats</option>
+                    <option id="list5" value="7">Attendance Stats By Grade</option>
+                    <option id="list8" value="8">PAT For Term</option>
                 </select>
             </div>
             <div class="input-items">

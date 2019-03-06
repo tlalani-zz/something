@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Manual Entry</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-database.js"></script>
+	<script src="js/functions.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/manual.js"></script>
+</head>
+<body>
+    <div>
+        <p>Select Grade</p>
+    </div>
+    <div>
+    <select id="grade-select" onchange="getStudents(this)">
+        <option hidden>Select A Grade</option>
+        <option value="0">1st Grade</option>
+        <option value="1">2nd Grade</option>
+        <option value="2">3rd Grade</option>
+        <option value="3">4th Grade</option>
+        <option value="4">5th Grade</option>
+    </select>
+    </div>
+    <div>
+        <p>Select Student</p>
+    </div>
+    <div>
+    <select id="student-select" disabled onchange="showPresentAbsent(this)"></select>
+    </div>
+    <div>
+        <p>Present or Absent</p>
+    </div>
+    <div>
+        <select id="pORa" disabled onchange="checkAbsent(this)">
+            <option hidden></option>
+            <option value="P">Present</option>
+            <option value="A">Absent</option>
+        </select>
+    </div>
+    <div>
+        <p>Other Information</p>
+    </div>
+    <div >
+    <input type="date" disabled id="date" onblur="addDate(this)">
+    <input disabled id="time" type="time" placeholder="Time" onchange="addTime(this)">
+    <div id="tardy-info" hidden>
+    <select name="reasons" onchange="addReason(this)">
+        <option value = "">Select a Reason</option>
+        <option value = "Extracurricular Education">Extracurricular Education</option>
+        <option value = "Extracurricular Sports">Extracurricular Sports</option>
+        <option value = "Health">Health</option>
+        <option value = "Personal">Personal</option>
+        <option value = 'Transportation'>Transportation</option>
+        <option value = 'Traveling'>Traveling</option>
+        <option value = 'Did Not Call'>Did Not Call</option>
+        <option value = 'No Response'>No Response</option>
+        <option value = 'Bad Contact Number'>Bad Contact Number</option>
+        <option value = 'Other'>Other</option>
+    </select>
+    <input id="comments" type="text" placeholder="Comments" onblur="addComments(this)">
+    </div>
+    </div>
+    <input type="button" value="Send" onclick="makeChanges()">
+</body>
+</html>

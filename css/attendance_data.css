@@ -16,6 +16,16 @@ body {
     z-index:-10;
 }
 
+.manual {
+    position:absolute;
+    top:10%;
+    left:93%;
+    color:white;
+    text-decoration: none;
+    cursor: pointer;
+    font-size:12px;
+}
+
 .top {
     overflow: hidden;
     background-color: #333;

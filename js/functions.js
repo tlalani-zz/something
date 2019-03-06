@@ -9,6 +9,8 @@ const offset = -13;
 var students = [];
 var staff = [];
 var selection = null
+var am = "AM";
+var pm = "PM";
 
 
 //FUNCTIONS
@@ -254,4 +256,22 @@ function openNav() {
   
 function closeNav() {
     document.getElementById("top").style.width = "0";
+}
+
+function clearChildren(element) {
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
+}
+
+function militaryTimeToAMPMTime(milTime) {
+    if(milTime.split(" ").length < 2) {
+        var time = milTime.split(":");
+        if(time[0] > 12) {
+            return time[0] % 12 + ":" + time[1] + " " + pm;
+        } else {
+            return milTime + " " + am;
+        }
+    }
+    return milTime;
 }
