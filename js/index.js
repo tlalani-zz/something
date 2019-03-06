@@ -1,9 +1,13 @@
 count = 0.1;
 function doMap(n, start1, stop1, start2, stop2) {
     return ((n-start1)/(stop1-start1))*(stop2-start2)+start2;
-  };
+};
+
 function signIn() {
     var username = document.getElementById("username").value;
+    if(username.indexOf('@') === -1) {
+        username += '@gmail.com';
+    }
     var password = document.getElementById("password").value;
     firebase.auth().signInWithEmailAndPassword(username, password).then(function(user) {
         if (user) window.location.href="attendance_data.html";
