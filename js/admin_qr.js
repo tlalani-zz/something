@@ -13,7 +13,7 @@ function addPerson() {
     var pic2_obj = document.getElementById("pic");
     var name =pic1_obj.options[pic1_obj.selectedIndex].value+":"+name_obj.value
     var pic1 = "students"
-    if(pic1_obj.selectedIndex > 1) {
+    if(pic1_obj.selectedIndex >= 1) {
         pic1 = "staff"
     }
     var pic2 = pic2_obj.value
