@@ -11,10 +11,7 @@ firebase.initializeApp(normalize(config));
 
 function logout() {
     firebase.auth().signOut()
-  .then(function() {
-    document.getElementById("login_out").style.display = "none";
-  })
-  .catch(function(error) {
-      alert(error);
-  });
+      .catch(function(error) {
+        alert(error);
+      });
 }

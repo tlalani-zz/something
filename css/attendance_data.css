@@ -17,9 +17,10 @@ body {
 }
 
 .manual {
-    position:absolute;
-    top:10%;
-    left:93%;
+    position:relative;
+    top:10px;
+    right: 10px;
+    float:right;
     color:white;
     text-decoration: none;
     cursor: pointer;

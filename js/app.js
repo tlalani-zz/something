@@ -29,6 +29,14 @@ function showOptionsDropdown() {
     document.getElementById("options1").style.display = "inline-block";
 }
 
+function patSelected() {
+   if(document.getElementById('per-day-attendance').selectedIndex === 5) {
+       document.getElementById('checkboi').hidden = false;
+   } else {
+       document.getElementById('checkboi').hidden = true;
+   }
+}
+
 function showDate(id, select) {
     var daily_queries = document.getElementById("per-day-attendance")
     var yearly_stats = document.getElementById("yearly-statistics")
@@ -51,6 +59,7 @@ function showDate(id, select) {
 }
 
 function doQuery() {
+    patSelected();
     document.getElementById("response").innerHTML = "";
     var textarea = document.getElementById("response");
     var db = firebase.database();
